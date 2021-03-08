@@ -1,0 +1,150 @@
+
+&star_job
+      
+      show_log_description_at_start = .false. 
+
+      load_saved_model = .true.
+      saved_model_name = 'pre_ms13.mod'
+
+      change_net = .true. ! switch nuclear reaction network
+      new_net_name = 'pp_and_cno_extras.net'
+
+      set_uniform_initial_composition = .true.
+      initial_zfracs = 3        ! GS98_zfracs = 3
+      initial_h1 = 7.0231D-1    !7.0067371641245069D-01
+      initial_h2 = 0
+      initial_he3 = 2.7769D-05  !2.7910526985061124D-05
+      initial_he4 = 2.7766D-01  !2.7907735932362615D-01
+
+      kappa_file_prefix = 'OP_gs98'
+      kappa_lowT_prefix = 'lowT_fa05_gs98' ! for lower temperatures.
+
+      set_rate_c12ag = 'Kunz'
+      set_rate_n14pg = 'jina reaclib'
+
+      relax_initial_mass = .true.
+      new_mass = 1.4d0
+      lg_max_abs_mdot = -100
+
+      set_initial_model_number = .true.
+      initial_model_number = 0
+
+      !pgstar_flag = .true.
+
+
+/ ! end of star_job namelist
+
+&controls
+
+      calculate_Brunt_N2 = .true.
+      num_cells_for_smooth_brunt_B = 0
+
+
+      ! atmosphere 
+      which_atm_option = 'Eddington_grey'
+
+
+      ! timesteps
+      max_timestep = 3.15d13
+      varcontrol_target = 1d-4
+
+
+      ! stopping condition
+      xa_central_lower_limit_species(1) = 'h1'
+      xa_central_lower_limit(1) = 1.d-4
+
+
+      ! mixing-length and overshoot
+      mixing_length_alpha = 1.9033976646700377D+00
+
+
+      overshoot_f_above_nonburn_core = 0.020d0
+      overshoot_f_above_nonburn_shell = 0.020d0
+      overshoot_f_below_nonburn_shell = 0.020d0
+      overshoot_f_above_burn_h_core = 0.020d0
+      overshoot_f_above_burn_h_shell = 0.020d0
+      overshoot_f_below_burn_h_shell = 0.020d0
+      overshoot_f_above_burn_he_core = 0.020d0
+      overshoot_f_above_burn_he_shell = 0.020d0
+      overshoot_f_below_burn_he_shell = 0.020d0
+      overshoot_f_above_burn_z_core = 0.020d0
+      overshoot_f_above_burn_z_shell = 0.020d0
+      overshoot_f_below_burn_z_shell = 0.020d0
+      overshoot_f0_above_nonburn_core = 0.005d0
+      overshoot_f0_above_nonburn_shell = 0.005d0
+      overshoot_f0_below_nonburn_shell = 0.005d0
+      overshoot_f0_above_burn_h_core = 0.005d0
+      overshoot_f0_above_burn_h_shell = 0.005d0
+      overshoot_f0_below_burn_h_shell = 0.005d0
+      overshoot_f0_above_burn_he_core = 0.005d0
+      overshoot_f0_above_burn_he_shell = 0.005d0
+      overshoot_f0_below_burn_he_shell = 0.005d0
+      overshoot_f0_above_burn_z_core = 0.005d0
+      overshoot_f0_above_burn_z_shell = 0.005d0
+      overshoot_f0_below_burn_z_shell = 0.005d0
+
+
+      ! output
+      photo_interval = 10000
+      write_profiles_flag = .true.
+      profile_interval = 10
+      max_num_profile_models = 10000
+      profile_data_prefix = 'profile'
+      profile_data_suffix = '.data'
+      profiles_index_name = 'profiles.index'
+      write_pulse_data_with_profile = .true.
+      pulse_data_format = 'FGONG'
+      add_atmosphere_to_pulse_data = .true.
+      do_history_file = .true.
+      history_interval = 1
+      terminal_interval = 10
+      write_header_frequency = 10
+      log_directory = 'LOGS'
+
+
+      ! extra mixing 
+      use_other_D_mix = .false.
+      x_ctrl(1) = 1.0d4      ! turbulent diffusion D0
+      x_ctrl(2) = 5.d-5      ! outer mixed mass (in solar unit)
+      x_integer_ctrl(1) = 4  ! density exponent
+
+
+      ! element diffusion 
+      do_element_diffusion = .true. ! determines whether or not we do diffusion
+      diffusion_dt_limit = 3.15d7   ! no element diffusion if dt < this limit (in seconds)
+
+      diffusion_T_full_on = 1d3
+      diffusion_T_full_off = 1d3
+      
+      diffusion_calculates_ionization = .true.
+      
+      diffusion_num_classes = 4 ! number of classes of species for diffusion calculations
+      diffusion_class_representative(1) = 'h1'
+      diffusion_class_representative(2) = 'he4'
+      diffusion_class_representative(3) = 'o16'
+      diffusion_class_representative(4) = 'fe56'
+   
+      ! in ascending order.  species goes into 1st class with A_max >= species A
+      diffusion_class_A_max(1) = 2
+      diffusion_class_A_max(2) = 4
+      diffusion_class_A_max(3) = 16
+      diffusion_class_A_max(4) = 10000
+         
+      diffusion_use_isolve = .true.
+      diffusion_rtol_for_isolve = 1d-4
+      diffusion_atol_for_isolve = 1d-5
+      diffusion_maxsteps_for_isolve = 1000
+      diffusion_isolve_solver = 'ros2_solver'
+
+      
+      ! mesh adjustment
+      mesh_delta_coeff = 0.4
+   	
+/ ! end of controls namelist
+
+
+&pgstar
+         
+
+
+/ ! end of pgstar namelist
